@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budgie Greeting</title>
+    <style>
+        body {
+            background: #87CEEB;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .budgie-container {
+            position: relative;
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .speech-bubble {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            margin-left: -10px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: white transparent transparent;
+        }
+
+        .speech-bubble.visible {
+            opacity: 1;
+            visibility: visible;
+            top: -120px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .budgie {
+            width: 150px;
+            animation: dance 2s ease-in-out infinite;
+        }
+
+        @keyframes dance {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(5deg); }
+            75% { transform: rotate(-5deg); }
+        }
+
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 1s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <div class="budgie-container" onclick="showMessage()">
+        <div class="speech-bubble">Hello!</div>
+        <svg class="budgie" viewBox="0 0 100 100">
+            <ellipse cx="50" cy="60" rx="40" ry="30" fill="#7ec850"/>
+            <circle cx="50" cy="40" r="20" fill="#7ec850"/>
+            <path d="M30 40 Q40 30 50 40 Q60 30 70 40" fill="none" stroke="black" stroke-width="2"/>
+            <circle cx="40" cy="35" r="3" fill="black"/>
+            <circle cx="60" cy="35" r="3" fill="black"/>
+            <path d="M40 70 L60 70 L50 80 Z" fill="yellow"/>
+        </svg>
+    </div>
+
+    <script>
+        function showMessage() {
+            const bubble = document.querySelector('.speech-bubble');
+            bubble.classList.add('visible');
+            
+            // Add sparkle effect
+            for(let i = 0; i < 20; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = star.style.height = Math.random() * 5 + 3 + 'px';
+                star.style.animationDelay = Math.random() * 1 + 's';
+                document.getElementById('stars').appendChild(star);
+                
+                setTimeout(() => star.remove(), 1000);
+            }
+
+            setTimeout(() => bubble.classList.remove('visible'), 2000);
+        }
+
+        // Add floating stars in background
+        setInterval(() => {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = star.style.height = Math.random() * 3 + 2 + 'px';
+            star.style.animationDuration = Math.random() * 0.5 + 0.5 + 's';
+            document.getElementById('stars').appendChild(star);
+            
+            setTimeout(() => star.remove(), 1000);
+        }, 500);
+    </script>
+</body>
+</html>
